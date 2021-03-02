@@ -1,9 +1,6 @@
-import { response } from 'express';
 import request from 'supertest';
 import { app } from '../app';
 import createConnection from '../database'
-
-
 
 describe("User", () => {
   beforeAll(async () => {

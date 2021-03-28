@@ -7,9 +7,6 @@ class UserController {
   async create(request: Request, response: Response) {
     const { name, email, password } = request.body;
 
-    const hashedPassword = hashSync(password, 8);
-    console.log(hashedPassword);
-    
     const usersRepository = getCustomRepository(UsersRepository);
 
     const userAlreadyExists = await usersRepository.findOne({ email })
@@ -19,16 +16,17 @@ class UserController {
         error: "Usuário já  cadastrado"
       })
     }
+    const hashedPassword = hashSync(password, 8);
 
-    const user = usersRepository.create({ name, email,password });
+    const user = usersRepository.create({ name, email, password: hashedPassword });
 
     await usersRepository.save(user);
 
-    return response.status(201).json({msg:"usuário registrado"})
+    return response.status(201).json({ msg: "usuário registrado" })
 
   }
 
-  async show(request: Request, response: Response){
+  async show(request: Request, response: Response) {
     const usersRepository = getCustomRepository(UsersRepository);
 
     const all = usersRepository.find();
